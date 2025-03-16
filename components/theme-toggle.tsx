@@ -1,65 +1,51 @@
 "use client"
 
-import { Moon, Sun, Monitor } from "lucide-react"
-import { useTheme } from "@/components/theme-provider"
+import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+import { useEffect, useState } from "react"
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Ensure component is mounted before accessing theme
+  // to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" disabled>
+        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        <span className="sr-only">Toggle theme</span>
+      </Button>
+    )
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="relative h-9 w-9 rounded-full">
+        <Button variant="ghost" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
-          <Sun
-            className={cn("h-5 w-5 transition-all", theme === "light" ? "scale-100 rotate-0" : "scale-0 -rotate-90")}
-          />
-          <Moon
-            className={cn(
-              "absolute h-5 w-5 transition-all",
-              theme === "dark" ? "scale-100 rotate-0" : "scale-0 rotate-90",
-            )}
-          />
-          <Monitor
-            className={cn(
-              "absolute h-5 w-5 transition-all",
-              theme === "system" ? "scale-100 rotate-0" : "scale-0 rotate-90",
-            )}
-          />
-          <span
-            className={cn(
-              "absolute inset-0 rounded-full border-2 border-primary transition-all",
-              theme === "light" ? "opacity-100" : "opacity-0",
-            )}
-          ></span>
-          <span
-            className={cn(
-              "absolute inset-0 rounded-full border-2 border-primary transition-all",
-              theme === "dark" ? "opacity-100" : "opacity-0",
-            )}
-          ></span>
-          <span
-            className={cn(
-              "absolute inset-0 rounded-full border-2 border-primary transition-all",
-              theme === "system" ? "opacity-100" : "opacity-0",
-            )}
-          ></span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")} className={theme === "light" ? "bg-accent" : ""}>
+        <DropdownMenuItem onClick={() => setTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")} className={theme === "dark" ? "bg-accent" : ""}>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")} className={theme === "system" ? "bg-accent" : ""}>
-          <Monitor className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          <span className="mr-2">💻</span>
           <span>System</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
