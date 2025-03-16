@@ -54,7 +54,7 @@ export function Header() {
               <Link href="/login">
                 <Button variant="ghost">Login</Button>
               </Link>
-              <Link href="/app/dashboard">
+              <Link href="/dashboard">
                 <Button>Get Started</Button>
               </Link>
             </div>
@@ -85,7 +85,7 @@ export function Header() {
                         Login
                       </Button>
                     </Link>
-                    <Link href="/app/dashboard">
+                    <Link href="/dashboard">
                       <Button className="w-full">Get Started</Button>
                     </Link>
                   </div>
