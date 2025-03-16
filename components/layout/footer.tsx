@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Twitter, Linkedin, Github, Mail, FileText } from "lucide-react"
+import { ScrollLink } from "@/components/scroll-link"
 
 export function Footer() {
   return (
@@ -25,14 +26,20 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#templates" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <ScrollLink
+                  href="#templates"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
                   Templates
-                </Link>
+                </ScrollLink>
               </li>
               <li>
-                <Link href="/#features" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <ScrollLink
+                  href="#features"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
                   Features
-                </Link>
+                </ScrollLink>
               </li>
               <li>
                 <Link href="/guides" className="text-sm text-muted-foreground hover:text-primary transition-colors">
