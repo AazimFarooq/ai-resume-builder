@@ -39,4 +39,3 @@ export function ScrollLink({ href, children, className, onClick }: ScrollLinkPro
     </a>
   )
 }
-
