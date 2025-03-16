@@ -16,40 +16,50 @@ export async function POST(request: Request) {
     const body = await request.json()
 
     // Simple validation
-    if (!body.email || !body.password) {
+    if (!body.email || !body.password || !body.name) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
     }
 
-    const { email, password } = body
+    const { email, password, name } = body
 
-    // Find user
-    const user = users.find((user) => user.email === email)
+    // Check if user already exists
+    const existingUser = users.find((user) => user.email === email)
 
-    if (!user || !user.password) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
+    if (existingUser) {
+      return NextResponse.json({ error: "User already exists" }, { status: 400 })
     }
 
-    // In a real app, we would verify the password with bcrypt
-    // const isPasswordValid = await bcrypt.compare(password, user.password)
-    const isPasswordValid = password === "password123" // For demo purposes
+    // In a real app, we would hash the password with bcrypt
+    // const salt = await bcrypt.genSalt(10)
+    // const hashedPassword = await bcrypt.hash(password, salt)
 
-    if (!isPasswordValid) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
+    // Create user
+    const newUser = {
+      id: `user${users.length + 1}`,
+      email,
+      password, // In a real app, this would be hashedPassword
+      name,
+      image: null,
     }
+
+    users.push(newUser)
 
     // Create JWT (in a real app)
     const token = "demo-jwt-token"
 
-    return NextResponse.json({
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
+    return NextResponse.json(
+      {
+        token,
+        user: {
+          id: newUser.id,
+          email: newUser.email,
+          name: newUser.name,
+        },
       },
-    })
+      { status: 201 },
+    )
   } catch (error) {
-    console.error("Login error:", error)
+    console.error("Registration error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
