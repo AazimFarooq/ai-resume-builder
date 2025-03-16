@@ -20,9 +20,15 @@ export function middleware(request: NextRequest) {
   // Check if the user is authenticated (has a session token)
   const isAuthenticated = request.cookies.has("session-token")
 
-  // Redirect logic
+  // For demo purposes, let's allow access to dashboard without authentication
+  // In a real app, you would redirect to login if not authenticated
   if (!isAuthenticated && path.startsWith("/dashboard")) {
-    // Redirect to login if trying to access dashboard without auth
+    // For development, let's allow access to dashboard without authentication
+    if (process.env.NODE_ENV === "development") {
+      return NextResponse.next()
+    }
+
+    // In production, redirect to login
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
@@ -39,6 +45,8 @@ export const config = {
   matcher: [
     // Match all dashboard routes
     "/dashboard/:path*",
+    // Match resume routes
+    "/resume/:path*",
     // Match auth routes
     "/login",
     "/register",
