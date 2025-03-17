@@ -12,21 +12,6 @@ import { FileUp, FileText, Upload, AlertCircle, Check, Cloud, Laptop, X } from "
 import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 
-// Loading component to show while the page is hydrating
-function LoadingState() {
-  return (
-    <div className="container max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Import Resume</h1>
-        <p className="text-muted-foreground mt-2">Upload your existing resume to enhance it with our AI tools</p>
-      </div>
-      <div className="flex items-center justify-center h-64">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent"></div>
-      </div>
-    </div>
-  )
-}
-
 // Supported file types
 const SUPPORTED_FILE_TYPES = [
   "application/pdf",
@@ -201,169 +186,157 @@ export default function ImportResumePage() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Render the appropriate content based on loading state
-  // Instead of early return, use conditional rendering
   return (
-    <>
-      {isPageLoading ? (
-        <LoadingState />
-      ) : (
-        <div className="container max-w-4xl mx-auto px-4 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">Import Resume</h1>
-            <p className="text-muted-foreground mt-2">Upload your existing resume to enhance it with our AI tools</p>
-          </div>
+    <div className="container max-w-4xl mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">Import Resume</h1>
+        <p className="text-muted-foreground mt-2">Upload your existing resume to enhance it with our AI tools</p>
+      </div>
 
-          <Tabs defaultValue="computer" value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-3 mb-8">
-              <TabsTrigger value="computer">
-                <Laptop className="mr-2 h-4 w-4" />
-                From Computer
-              </TabsTrigger>
-              <TabsTrigger value="google-drive">
-                <Cloud className="mr-2 h-4 w-4" />
-                Google Drive
-              </TabsTrigger>
-              <TabsTrigger value="dropbox">
-                <Cloud className="mr-2 h-4 w-4" />
-                Dropbox
-              </TabsTrigger>
-            </TabsList>
+      <Tabs defaultValue="computer" value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid grid-cols-3 mb-8">
+          <TabsTrigger value="computer">
+            <Laptop className="mr-2 h-4 w-4" />
+            From Computer
+          </TabsTrigger>
+          <TabsTrigger value="google-drive">
+            <Cloud className="mr-2 h-4 w-4" />
+            Google Drive
+          </TabsTrigger>
+          <TabsTrigger value="dropbox">
+            <Cloud className="mr-2 h-4 w-4" />
+            Dropbox
+          </TabsTrigger>
+        </TabsList>
 
-            <TabsContent value="computer" className="mt-0">
-              <Card>
-                <CardContent className="pt-6">
-                  <div
-                    className={cn(
-                      "border-2 border-dashed rounded-lg p-12 text-center hover:bg-muted/50 transition-colors cursor-pointer",
-                      isDragging && "border-primary bg-primary/5",
-                      selectedFile && "border-green-500 bg-green-500/5",
-                    )}
-                    onDragEnter={handleDragEnter}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onClick={() => document.getElementById("file-upload")?.click()}
-                  >
-                    <input
-                      id="file-upload"
-                      type="file"
-                      className="hidden"
-                      accept=".pdf,.doc,.docx,.txt"
-                      onChange={handleFileInputChange}
-                    />
+        <TabsContent value="computer" className="mt-0">
+          <Card>
+            <CardContent className="pt-6">
+              <div
+                className={cn(
+                  "border-2 border-dashed rounded-lg p-12 text-center hover:bg-muted/50 transition-colors cursor-pointer",
+                  isDragging && "border-primary bg-primary/5",
+                  selectedFile && "border-green-500 bg-green-500/5",
+                )}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById("file-upload")?.click()}
+              >
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="hidden"
+                  accept=".pdf,.doc,.docx,.txt"
+                  onChange={handleFileInputChange}
+                />
 
-                    {selectedFile ? (
-                      <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4">
-                          <Check className="h-8 w-8 text-green-500" />
-                        </div>
-                        <h3 className="text-xl font-medium mb-2">File Selected</h3>
-                        <p className="text-muted-foreground mb-2">{selectedFile.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                          <FileUp className="h-8 w-8 text-primary" />
-                        </div>
-                        <h3 className="text-xl font-medium mb-2">Drag & Drop your resume here</h3>
-                        <p className="text-muted-foreground mb-4">or click to browse files</p>
-                        <p className="text-sm text-muted-foreground">
-                          Supports PDF, DOCX, DOC, and TXT files (max 10MB)
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {error && (
-                    <div className="flex items-center gap-2 mt-4 p-3 bg-destructive/10 text-destructive rounded-md">
-                      <AlertCircle className="h-5 w-5" />
-                      <p className="text-sm">{error}</p>
+                {selectedFile ? (
+                  <div className="flex flex-col items-center">
+                    <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-4">
+                      <Check className="h-8 w-8 text-green-500" />
                     </div>
-                  )}
-
-                  <div className="mt-6">
-                    <h3 className="font-medium mb-2">Or use File System Access API</h3>
-                    <Button variant="outline" onClick={handleFileSystemAccess} disabled={isLoading} className="w-full">
-                      {isLoading ? (
-                        <>
-                          <Upload className="mr-2 h-4 w-4 animate-spin" />
-                          Accessing Files...
-                        </>
-                      ) : (
-                        <>
-                          <FileText className="mr-2 h-4 w-4" />
-                          Select from Files
-                        </>
-                      )}
-                    </Button>
+                    <h3 className="text-xl font-medium mb-2">File Selected</h3>
+                    <p className="text-muted-foreground mb-2">{selectedFile.name}</p>
+                    <p className="text-sm text-muted-foreground">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="google-drive" className="mt-0">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex flex-col items-center justify-center py-12">
+                ) : (
+                  <div className="flex flex-col items-center">
                     <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                      <Cloud className="h-8 w-8 text-primary" />
+                      <FileUp className="h-8 w-8 text-primary" />
                     </div>
-                    <h3 className="text-xl font-medium mb-2">Import from Google Drive</h3>
-                    <p className="text-muted-foreground mb-6 text-center max-w-md">
-                      Connect your Google Drive account to import your resume documents directly
-                    </p>
-                    <Button onClick={handleGoogleDriveImport}>Connect Google Drive</Button>
+                    <h3 className="text-xl font-medium mb-2">Drag & Drop your resume here</h3>
+                    <p className="text-muted-foreground mb-4">or click to browse files</p>
+                    <p className="text-sm text-muted-foreground">Supports PDF, DOCX, DOC, and TXT files (max 10MB)</p>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+                )}
+              </div>
 
-            <TabsContent value="dropbox" className="mt-0">
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="flex flex-col items-center justify-center py-12">
-                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
-                      <Cloud className="h-8 w-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-medium mb-2">Import from Dropbox</h3>
-                    <p className="text-muted-foreground mb-6 text-center max-w-md">
-                      Connect your Dropbox account to import your resume documents directly
-                    </p>
-                    <Button onClick={handleDropboxImport}>Connect Dropbox</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          <div className="flex justify-between mt-8">
-            <Button variant="outline" asChild>
-              <Link href="/dashboard/resumes">
-                <X className="mr-2 h-4 w-4" />
-                Cancel
-              </Link>
-            </Button>
-            <Button onClick={handleUpload} disabled={!selectedFile || isLoading}>
-              {isLoading ? (
-                <>
-                  <Upload className="mr-2 h-4 w-4 animate-spin" />
-                  Uploading...
-                </>
-              ) : (
-                <>
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Resume
-                </>
+              {error && (
+                <div className="flex items-center gap-2 mt-4 p-3 bg-destructive/10 text-destructive rounded-md">
+                  <AlertCircle className="h-5 w-5" />
+                  <p className="text-sm">{error}</p>
+                </div>
               )}
-            </Button>
-          </div>
-        </div>
-      )}
-    </>
+
+              <div className="mt-6">
+                <h3 className="font-medium mb-2">Or use File System Access API</h3>
+                <Button variant="outline" onClick={handleFileSystemAccess} disabled={isLoading} className="w-full">
+                  {isLoading ? (
+                    <>
+                      <Upload className="mr-2 h-4 w-4 animate-spin" />
+                      Accessing Files...
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Select from Files
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="google-drive" className="mt-0">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                  <Cloud className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-medium mb-2">Import from Google Drive</h3>
+                <p className="text-muted-foreground mb-6 text-center max-w-md">
+                  Connect your Google Drive account to import your resume documents directly
+                </p>
+                <Button onClick={handleGoogleDriveImport}>Connect Google Drive</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="dropbox" className="mt-0">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                  <Cloud className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-medium mb-2">Import from Dropbox</h3>
+                <p className="text-muted-foreground mb-6 text-center max-w-md">
+                  Connect your Dropbox account to import your resume documents directly
+                </p>
+                <Button onClick={handleDropboxImport}>Connect Dropbox</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      <div className="flex justify-between mt-8">
+        <Button variant="outline" asChild>
+          <Link href="/dashboard/resumes">
+            <X className="mr-2 h-4 w-4" />
+            Cancel
+          </Link>
+        </Button>
+        <Button onClick={handleUpload} disabled={!selectedFile || isLoading}>
+          {isLoading ? (
+            <>
+              <Upload className="mr-2 h-4 w-4 animate-spin" />
+              Uploading...
+            </>
+          ) : (
+            <>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Resume
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
   )
 }
 
