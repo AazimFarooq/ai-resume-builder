@@ -125,4 +125,3 @@ export default function PreviewResumePage() {
     </div>
   )
 }
-
