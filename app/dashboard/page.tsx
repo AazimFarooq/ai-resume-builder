@@ -1,6 +1,10 @@
-import { redirect } from "next/navigation"
+import DashboardClient from "./dashboard-client"
 
 export default function DashboardPage() {
-  // Redirect to the resumes page instead of the app dashboard
-  redirect("/dashboard/resumes")
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <DashboardClient />
+    </div>
+  )
 }
+
