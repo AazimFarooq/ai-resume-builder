@@ -1,22 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import "@/styles/global.css"
 
-// Initialize the Inter font with a fallback
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  fallback: ["system-ui", "sans-serif"],
-})
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Resume Builder - Create Professional Resumes with AI",
-  description: "Build professional resumes with AI assistance, beautiful templates, and easy PDF export.",
-    generator: 'v0.dev'
+  description:
+    "Build ATS-friendly resumes that stand out and get you hired. Our AI-powered platform helps you create professional resumes tailored to your industry.",
 }
 
 export default function RootLayout({
@@ -26,19 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning={true}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
         </ThemeProvider>
       </body>
     </html>
   )
 }
 
-
-
-import './globals.css'
