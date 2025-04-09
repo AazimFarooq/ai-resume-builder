@@ -6,7 +6,7 @@ import { ZoomIn, ZoomOut, Maximize, Minimize } from "lucide-react"ff
 
 interface ResumePreviewProps {
   data: any
-}
+}ff
 
 export function ResumePreview({ data }: ResumePreviewProps) {
   const [zoom, setZoom] = useState(100)
