@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ZoomIn, ZoomOut, Maximize, Minimize } from "lucide-react"
+import { ZoomIn, ZoomOut, Maximize, Minimize } from "lucide-react"ff
 
 interface ResumePreviewProps {
   data: any
