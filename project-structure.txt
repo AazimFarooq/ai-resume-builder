@@ -8,7 +8,7 @@ resume-builder/
 │   │   ├── page.tsx          # Home page
 │   │   ├── about/            # About page
 │   │   ├── pricing/          # Pricing page
-│   │   └── contact/          # Contact page
+│   │   └── contact/         Contact page
 │   ├── blog/                 # Blog section
 │   │   ├── page.tsx          # Blog listing page
 │   │   ├── [slug]/           # Individual blog post pages
